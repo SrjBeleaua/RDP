@@ -1,22 +1,15 @@
 name: Docker Image CI
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+name: CI
+on: [push, workflow_dispatch]
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - name: Ngrok
-      run: wget -O ngrok.zip https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip > /dev/null 2>&1 unzip ngrok.zip > /dev/null 2>&1
+    run: wget -O ngrok.zip https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip > /dev/null 2>&1 unzip ngrok.zip > /dev/null 2>&1
    - name: Auth
-     run: ngrok config add-authtoken env.NGROK_AUTH_TOKEN
+    run: ngrok config add-authtoken env.NGROK_AUTH_TOKEN
     - name: Build the Docker image
-      run: docker run --rm -d -p 4000:4000 --privileged --name nomachine-mate -e PASSWORD=ram -e USER=ram --cap-add=SYS_PTRACE --shm-size=1g thuonghai2711/nomachine-kali-desktop:latest
+     run: docker run --rm -d -p 4000:4000 --privileged --name nomachine-mate -e PASSWORD=ram -e USER=ram --cap-add=SYS_PTRACE --shm-size=1g thuonghai2711/nomachine-kali-desktop:latest
 
